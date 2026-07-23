@@ -794,12 +794,12 @@ const ADMIN_EMAIL_KEY = "netlink_active_admin_email";
 export function checkAdminSession(): { authenticated: boolean; role: AdminRole; email: string } {
   if (typeof window === "undefined") return { authenticated: false, role: "super_admin", email: "" };
   const role = (sessionStorage.getItem(ADMIN_ROLE_KEY) as AdminRole) || "super_admin";
-  const email = sessionStorage.getItem(ADMIN_EMAIL_KEY) || "admin@netlink.com";
+  const email = sessionStorage.getItem(ADMIN_EMAIL_KEY) || "";
   const authed = sessionStorage.getItem("netlink_admin_authenticated") === "true";
   return { authenticated: authed, role, email };
 }
 
-export function setAdminSession(auth: boolean, role: AdminRole = "super_admin", email: string = "admin@netlink.com") {
+export function setAdminSession(auth: boolean, role: AdminRole = "super_admin", email: string = "") {
   if (typeof window === "undefined") return;
   if (auth) {
     sessionStorage.setItem("netlink_admin_authenticated", "true");

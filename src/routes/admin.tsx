@@ -89,11 +89,11 @@ export function AdminPage() {
   // Authentication & Role State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [currentRole, setCurrentRole] = useState<AdminRole>("super_admin");
-  const [currentEmail, setCurrentEmail] = useState<string>("admin@netlink.com");
+  const [currentEmail, setCurrentEmail] = useState<string>("");
   
   // Login Form State
   const [passwordInput, setPasswordInput] = useState("");
-  const [emailInput, setEmailInput] = useState("admin@netlink.com");
+  const [emailInput, setEmailInput] = useState("");
   const [authError, setAuthError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
 
@@ -685,53 +685,57 @@ export function AdminPage() {
 
   if (!isMounted) return null;
 
-  // LOGIN SCREEN (WARM AMBER EXECUTIVE PALETTE)
+  // LOGIN SCREEN (MATCHES WEBSITE DARK OBSIDIAN & ELECTRIC NEON LIME PALETTE)
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#FFFDF8] flex items-center justify-center p-4 selection:bg-[#B45309] selection:text-white">
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-3xl p-8 md:p-12 max-w-md w-full shadow-xl space-y-6">
-          <div className="text-center space-y-2">
-            <div className="h-12 w-12 rounded-2xl bg-[#B45309] text-white flex items-center justify-center mx-auto font-black text-2xl shadow-md shadow-[#B45309]/30">
-              <ShieldCheck className="w-6 h-6" />
+      <div className="min-h-screen bg-[#0B0C0E] text-white flex items-center justify-center p-4 selection:bg-[#D2F500] selection:text-black">
+        <div className="bg-[#121316] border border-[#24272D] rounded-3xl p-8 md:p-12 max-w-md w-full shadow-2xl space-y-6">
+          <div className="text-center space-y-3">
+            <div className="h-14 w-14 rounded-2xl bg-[#D2F500] text-black flex items-center justify-center mx-auto font-black text-2xl shadow-[0_0_25px_rgba(210,245,0,0.35)]">
+              <ShieldCheck className="w-8 h-8 text-black" />
             </div>
-            <h1 className="text-2xl font-black text-[#1F2937] tracking-tight uppercase">NetLink Admin</h1>
-            <p className="text-xs text-gray-500 font-medium">Enter your credentials to access the portal.</p>
+            <h1 className="text-2xl font-black tracking-tight uppercase text-white">
+              {siteConfig?.brand_name || "FCC NetLink"} <span className="text-[#D2F500]">Admin</span>
+            </h1>
+            <p className="text-xs text-neutral-400 font-medium">Enter your administrative credentials to access the portal.</p>
           </div>
 
           {authError && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-500" />
+            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-400" />
               <span>{authError}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-extrabold uppercase text-[#1F2937] mb-1">Email Address</label>
+              <label className="block text-xs font-black uppercase text-neutral-300 mb-1.5">Email Address</label>
               <input
                 type="email"
                 required
+                placeholder="Enter admin email address..."
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-gray-300 bg-[#FFFDF8] text-sm text-[#1F2937] font-mono focus:ring-2 focus:ring-[#B45309] focus:outline-none"
+                className="w-full px-4 py-3.5 rounded-xl border border-[#24272D] bg-[#18191D] text-sm text-white placeholder-neutral-500 font-mono focus:ring-2 focus:ring-[#D2F500] focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-extrabold uppercase text-[#1F2937] mb-1">Password</label>
+              <label className="block text-xs font-black uppercase text-neutral-300 mb-1.5">Password</label>
               <input
                 type="password"
                 required
+                placeholder="Enter password..."
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-gray-300 bg-[#FFFDF8] text-sm text-[#1F2937] focus:ring-2 focus:ring-[#B45309] focus:outline-none"
+                className="w-full px-4 py-3.5 rounded-xl border border-[#24272D] bg-[#18191D] text-sm text-white placeholder-neutral-500 focus:ring-2 focus:ring-[#D2F500] focus:outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={loggingIn}
-              className="w-full py-4 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white font-black text-xs uppercase tracking-wider shadow-md shadow-[#B45309]/20 transition-all flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-xl bg-[#D2F500] hover:bg-[#bce000] text-black font-black text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(210,245,0,0.3)] transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               {loggingIn ? <RefreshCw className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4" />}
               <span>{loggingIn ? "Verifying..." : "Authenticate Admin Access"}</span>
