@@ -84,7 +84,7 @@ export const Route = createFileRoute("/admin")({
 });
 
 export function AdminPage() {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(true);
 
   // Authentication & Role State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
