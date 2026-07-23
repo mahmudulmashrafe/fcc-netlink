@@ -1,29 +1,31 @@
-# Welcome to your Lovable project
+# FCC NetLink — Ultra Fast Fiber Broadband & 4K IPTV Web Portal
 
-This project was built with [Lovable](https://lovable.dev).
+Official Web Portal and Admin Control Panel for **FCC NetLink Broadband**. Built with high-performance modern web technologies including TanStack Start, React 19, TypeScript, TailwindCSS v4, and Supabase integration.
 
-## Build with Lovable
+## 🚀 Features
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+- **Home & Live BDIX Portals**: High-speed FTP, IPTV, and media streaming tiles.
+- **Service Plans & Pricing**: Interactive packages, custom offer builder, and discount badges.
+- **Software Library**: Centralized downloads hub for ISP utilities and media players.
+- **Admin Control Panel**: Full management dashboard for links, software tools, site config, and package management.
+- **Supabase & Local Persistence**: Realtime database connection with resilient fallback storage.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## 🛠️ Development & Running Locally
 
-## Development
+```bash
+# Install dependencies
+npm install
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+# Run dev server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-## Built with
+## 🏗️ Technology Stack
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+- **Framework**: TanStack Start (SSR + Vite)
+- **UI**: React 19 + TailwindCSS v4
+- **Icons**: Lucide React
+- **Database**: Supabase JS

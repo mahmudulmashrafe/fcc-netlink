@@ -1,10 +1,6 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# AGENTS Guidelines — FCC NetLink
+
+## Project Architecture & Core Conventions
+- **Framework**: TanStack Start + React 19 + Vite
+- **Database / Backend**: Supabase JS Client with local storage persistence fallback
+- **Styling**: TailwindCSS v4 with dark theme obsidian design system
