@@ -1927,8 +1927,7 @@ export function AdminPage() {
                   <label className="block text-xs sm:text-sm font-black uppercase text-white mb-1.5">Email Address *</label>
                   <input
                     type="email"
-                    required
-                    placeholder="tanvir@netlink.com"
+                    placeholder="admin@fccnetlink.com"
                     value={newAdminEmail}
                     onChange={(e) => setNewAdminEmail(e.target.value)}
                     className="w-full px-4 py-3.5 rounded-xl border border-[#24272D] bg-[#0B0C0E] text-sm sm:text-base text-white font-mono font-bold focus:ring-2 focus:ring-[#D2F500] focus:outline-none"

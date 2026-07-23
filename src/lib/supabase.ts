@@ -608,8 +608,22 @@ export async function deleteSoftware(id: string): Promise<boolean> {
 }
 
 // -------------------------------------------------------------
-// Admin Users Helpers
+// Admin Users Helpers & Password Hashing
 // -------------------------------------------------------------
+export async function hashPassword(password: string): Promise<string> {
+  if (!password) return "";
+  try {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  } catch (e) {
+    console.warn("crypto.subtle not available, fallback hashing:", e);
+    return password;
+  }
+}
+
 export async function fetchAdminUsers(): Promise<AdminUser[]> {
   try {
     const { data, error } = await supabase.from("admin_users").select("*").order("created_at", { ascending: false });
@@ -624,10 +638,13 @@ export async function fetchAdminUsers(): Promise<AdminUser[]> {
 }
 
 export async function addAdminUser(user: Omit<AdminUser, "id">): Promise<AdminUser> {
+  const plainPass = user.password || "123456";
+  const hashedPassword = await hashPassword(plainPass);
+
   const payload = {
     name: user.name,
     email: user.email.trim().toLowerCase(),
-    password: user.password || "123456",
+    password: hashedPassword,
     role: user.role,
   };
 
@@ -653,6 +670,7 @@ export async function updateAdminUser(id: string, user: Partial<AdminUser>): Pro
   const payload: any = { ...user };
   delete payload.id;
   if (payload.email) payload.email = payload.email.trim().toLowerCase();
+  if (payload.password) payload.password = await hashPassword(payload.password);
 
   try {
     const { error } = await supabase.from("admin_users").update(payload).eq("id", id);
@@ -662,7 +680,7 @@ export async function updateAdminUser(id: string, user: Partial<AdminUser>): Pro
   }
 
   const current = getLocal(LOCAL_ADMINS_KEY, []);
-  const updated = current.map((a) => (a.id === id ? { ...a, ...user } : a));
+  const updated = current.map((a) => (String(a.id) === String(id) ? { ...a, ...payload } : a));
   saveLocal(LOCAL_ADMINS_KEY, updated);
   return true;
 }
@@ -736,6 +754,7 @@ export async function loginAdminWithSupabase(
   pass: string
 ): Promise<{ success: boolean; role: AdminRole; name?: string; message?: string }> {
   const trimmedEmail = email.trim().toLowerCase();
+  const hashedPass = await hashPassword(pass);
 
   // 1. Query Supabase admin_users DB table directly
   try {
@@ -746,8 +765,13 @@ export async function loginAdminWithSupabase(
 
     if (!dbError && dbUsers && dbUsers.length > 0) {
       const dbUser = dbUsers[0];
-      if (dbUser.password && dbUser.password !== pass) {
+      const matches = dbUser.password === hashedPass || dbUser.password === pass;
+      if (dbUser.password && !matches) {
         return { success: false, role: dbUser.role as AdminRole, message: `Incorrect password for ${trimmedEmail}.` };
+      }
+      // Upgrade plain-text password to hash in DB & local state if legacy
+      if (dbUser.password === pass) {
+        updateAdminUser(dbUser.id, { password: hashedPass });
       }
       return { success: true, role: dbUser.role as AdminRole, name: dbUser.name };
     }
@@ -774,7 +798,8 @@ export async function loginAdminWithSupabase(
   const matchedAdmin = localAdmins.find((a) => a.email.trim().toLowerCase() === trimmedEmail);
 
   if (matchedAdmin) {
-    if (matchedAdmin.password && matchedAdmin.password !== pass) {
+    const matches = matchedAdmin.password === hashedPass || matchedAdmin.password === pass;
+    if (matchedAdmin.password && !matches) {
       return { success: false, role: matchedAdmin.role, message: `Incorrect password for ${trimmedEmail}.` };
     }
     return { success: true, role: matchedAdmin.role, name: matchedAdmin.name };
