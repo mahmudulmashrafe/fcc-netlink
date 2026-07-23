@@ -1,16 +1,25 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { StartClient } from "@tanstack/react-start-client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { QueryClient } from "@tanstack/react-query";
+import { routeTree } from "./routeTree.gen";
 import "./styles.css";
+
+const queryClient = new QueryClient();
+
+const router = createRouter({
+  routeTree,
+  context: { queryClient },
+  scrollRestoration: true,
+  defaultPreloadStaleTime: 0,
+});
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <Suspense fallback={<div className="min-h-screen bg-[#141414]" />}>
-        <StartClient />
-      </Suspense>
+      <RouterProvider router={router} />
     </React.StrictMode>
   );
 }
