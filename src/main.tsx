@@ -1,13 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "@tanstack/react-router";
-import { getRouter } from "./router";
+import { StartClient } from "@tanstack/react-start-client";
 import "./styles.css";
-
-const router = getRouter();
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<RouterProvider router={router} />);
+  root.render(
+    <React.StrictMode>
+      <Suspense fallback={<div className="min-h-screen bg-[#141414]" />}>
+        <StartClient />
+      </Suspense>
+    </React.StrictMode>
+  );
 }
