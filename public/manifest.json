@@ -1,0 +1,17 @@
+{
+  "short_name": "NetLink Admin",
+  "name": "FCC NetLink Admin Portal",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/admin",
+  "background_color": "#0B0C0E",
+  "theme_color": "#0B0C0E",
+  "display": "standalone",
+  "orientation": "portrait"
+}
